@@ -20,7 +20,7 @@ jobs:
       run: pip install bandit
 
     - name: Run Bandit Scan
-      run: bandit -r . -f txt -o security_report.txt
+      run: bandit -r .
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
