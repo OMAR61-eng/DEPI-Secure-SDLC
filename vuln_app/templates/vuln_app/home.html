@@ -1,0 +1,79 @@
+{% extends "vuln_app/base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<div style="background: linear-gradient(135deg, var(--primary) 0%, #2d6ea8 100%); color:#fff; border-radius:12px; padding:36px 40px; margin-bottom:30px; display:flex; align-items:center; gap:30px;">
+  <div>
+    <div style="font-size:0.8rem; color:#a0c4e0; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">Welcome to the</div>
+    <h1 style="font-size:1.9rem; font-weight:800; margin-bottom:10px; line-height:1.2;">DEPI E-Learning Portal</h1>
+    <p style="color:#c8dcef; font-size:0.95rem; max-width:480px; line-height:1.6;">Access your DEPI learning tracks, progress updates, and training resources in one place. Built for the Digital Egypt Pioneers Initiative.</p>
+    <div style="margin-top:20px; display:flex; gap:12px;">
+      <a href="/login/" class="btn btn-accent">DEPI Member Login</a>
+      <a href="/register/" class="btn btn-primary" style="background-color: #1565c0; border: 1px solid #fff;">Create DEPI Account</a>
+    </div>
+  </div>
+  <div style="font-size:5rem; opacity:0.3; margin-left:auto;"></div>
+</div>
+
+<div class="stats-grid" style="margin-bottom: 30px;">
+  <a href="/stats/courses/" class="stat-card" style="text-decoration:none; color:inherit; display:block;"><div class="stat-icon blue"></div><div><div class="stat-num">{{ stats.active_courses }}</div><div class="stat-label">Active DEPI Tracks</div></div></a>
+  <a href="/stats/learners/" class="stat-card" style="text-decoration:none; color:inherit; display:block;"><div class="stat-icon green"></div><div><div class="stat-num">{{ stats.enrolled_students }}</div><div class="stat-label">Registered Learners</div></div></a>
+  <a href="/stats/mentors/" class="stat-card" style="text-decoration:none; color:inherit; display:block;"><div class="stat-icon amber"></div><div><div class="stat-num">{{ stats.faculty_members }}</div><div class="stat-label">DEPI Mentors</div></div></a>
+  <a href="/stats/completion/" class="stat-card" style="text-decoration:none; color:inherit; display:block;"><div class="stat-icon purple"></div><div><div class="stat-num">{{ stats.pass_rate }}%</div><div class="stat-label">Completion Rate</div></div></a>
+</div>
+
+<div style="display:grid; grid-template-columns: 1fr 360px; gap:25px;">
+  
+  <div class="card" style="margin-bottom: 0;">
+    <div class="card-header">
+      <span class="card-title">Latest Announcements</span>
+      <a href="/announcements/" class="btn btn-outline btn-sm">View All</a>
+    </div>
+    {% for ann in announcements %}
+    <div class="ann-card {% if ann.is_pinned %}pinned{% endif %}">
+      <div class="ann-title">
+        {% if ann.is_pinned %}<span class="badge badge-primary" style="margin-right:6px;"> Pinned</span>{% endif %}
+        {{ ann.title }}
+      </div>
+      <div class="ann-meta">By {{ ann.author.full_name }} · {{ ann.posted_at|date:"M d, Y" }}</div>
+      <div class="ann-body">{{ ann.body|safe|truncatewords:30 }}</div>
+    </div>
+    {% empty %}
+    <p style="color:var(--text-muted); padding:20px 0;">No announcements yet.</p>
+    {% endfor %}
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 25px;">
+    <div class="card" style="margin-bottom: 0;">
+      <div class="card-header"><span class="card-title">Featured Courses</span></div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        {% for course in courses %}
+        <div style="padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface2);">
+          <div style="font-weight: 600; color: var(--primary);">{{ course.code }} — {{ course.title }}</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Instructor: {{ course.instructor.full_name|default:"TBA" }}</div>
+        </div>
+        {% empty %}
+        <p style="color: var(--text-muted);">No active courses available.</p>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom: 0;">
+      <div class="card-header"><span class="card-title">Quick Access</span></div>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+          <a href="/dashboard/" style="display:flex; align-items:center; gap:12px; padding:12px 15px; border-radius:8px; border:1px solid var(--border); text-decoration:none; color:var(--text); background:var(--surface2); transition:all 0.2s;" onmouseover="this.style.background='#e3ecf9'; this.style.borderColor='var(--info)'" onmouseout="this.style.background='var(--surface2)'; this.style.borderColor='var(--border)'">
+            <span style="font-size:1.3rem;"></span> <strong>My Dashboard</strong>
+          </a>
+          <a href="/grades/" style="display:flex; align-items:center; gap:12px; padding:12px 15px; border-radius:8px; border:1px solid var(--border); text-decoration:none; color:var(--text); background:var(--surface2); transition:all 0.2s;" onmouseover="this.style.background='#e3ecf9'; this.style.borderColor='var(--info)'" onmouseout="this.style.background='var(--surface2)'; this.style.borderColor='var(--border)'">
+            <span style="font-size:1.3rem;"></span> <strong>View My Grades</strong>
+          </a>
+          <a href="/tickets/" style="display:flex; align-items:center; gap:12px; padding:12px 15px; border-radius:8px; border:1px solid var(--border); text-decoration:none; color:var(--text); background:var(--surface2); transition:all 0.2s;" onmouseover="this.style.background='#e3ecf9'; this.style.borderColor='var(--info)'" onmouseout="this.style.background='var(--surface2)'; this.style.borderColor='var(--border)'">
+            <span style="font-size:1.3rem;"></span> <strong>Submit Support Ticket</strong>
+          </a>
+          <a href="/search/" style="display:flex; align-items:center; gap:12px; padding:12px 15px; border-radius:8px; border:1px solid var(--border); text-decoration:none; color:var(--text); background:var(--surface2); transition:all 0.2s;" onmouseover="this.style.background='#e3ecf9'; this.style.borderColor='var(--info)'" onmouseout="this.style.background='var(--surface2)'; this.style.borderColor='var(--border)'">
+            <span style="font-size:1.3rem;"></span> <strong>Search Course Catalog</strong>
+          </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

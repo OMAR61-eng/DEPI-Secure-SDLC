@@ -1,0 +1,34 @@
+{% extends "vuln_app/base.html" %}
+{% block title %}Announcements{% endblock %}
+{% block content %}
+<h2 class="page-title">Announcements</h2>
+
+{% if request.session.role == 'admin' or request.session.role == 'instructor' %}
+<div class="card">
+    <div class="card-header"><span class="card-title">Post New Announcement</span></div>
+    <form method="POST" action="/announcements/">
+        <div class="form-group">
+            <label>Title</label>
+            <input type="text" name="title" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label>Content</label>
+            <textarea name="body" class="form-control" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-accent">Publish Announcement</button>
+    </form>
+</div>
+{% endif %}
+
+<div class="card">
+    {% for ann in announcements %}
+    <div class="ann-card {% if ann.is_pinned %}pinned{% endif %}">
+        <div class="ann-title">{{ ann.title }}</div>
+        <div class="ann-meta">By {{ ann.author.full_name }} · {{ ann.posted_at|date:"M d, Y" }}</div>
+        <div class="ann-body">{{ ann.body }}</div>
+    </div>
+    {% empty %}
+    <p style="color: var(--text-muted);">No announcements available.</p>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "vuln_app/base.html" %}
+{% block title %}Active DEPI Tracks{% endblock %}
+{% block content %}
+<h2 class="page-title">Active DEPI Tracks</h2>
+<p class="breadcrumb">Browse the currently active learning tracks and their instructors.</p>
+<div class="card">
+  <table>
+    <tr>
+      <th>Code</th>
+      <th>Course</th>
+      <th>Instructor</th>
+      <th>Status</th>
+    </tr>
+    {% for course in courses %}
+    <tr>
+      <td><strong>{{ course.code }}</strong></td>
+      <td>{{ course.title }}</td>
+      <td>{{ course.instructor.full_name|default:"TBA" }}</td>
+      <td><span class="badge badge-primary">Active</span></td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="4">No active tracks found.</td></tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

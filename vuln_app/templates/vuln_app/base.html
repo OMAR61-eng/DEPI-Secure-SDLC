@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}DEPI E-Learning Portal{% endblock %} | DEPI</title>
+  <style>
+    :root {
+      --primary: #1a3a5c;
+      --primary-dark: #122840;
+      --accent: #c8963e;
+      --accent-light: #e8b86d;
+      --bg: #f0f4f8;
+      --surface: #ffffff;
+      --surface2: #f7f9fc;
+      --border: #dde3ed;
+      --text: #1e2d3d;
+      --text-muted: #5a6a7e;
+      --success: #1a7f4b;
+      --danger: #c0392b;
+      --info: #1565c0;
+      --sidebar-w: 240px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg);
+           color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+    /* ── Top Bar ── */
+    .topbar {
+      background: var(--primary-dark);
+      padding: 8px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 0.78rem; color: #a0b4c8;
+      border-bottom: 2px solid var(--accent);
+    }
+    .topbar a { color: #a0b4c8; text-decoration: none; margin-left: 16px; }
+    .topbar a:hover { color: #fff; }
+
+    /* ── Main Header ── */
+    header {
+      background: var(--primary);
+      padding: 0 24px;
+      display: flex; align-items: center; gap: 20px;
+      height: 70px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    }
+    .logo-wrap { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+    .logo-icon {
+      width: 46px; height: 46px; background: var(--accent);
+      border-radius: 10px; display: flex; align-items: center;
+      justify-content: center; font-size: 1.5rem; color: #fff; font-weight: 700;
+    }
+    .logo-text { color: #fff; }
+    .logo-text strong { display: block; font-size: 1.05rem; letter-spacing: 0.3px; }
+    .logo-text span { font-size: 0.72rem; color: #a0c4e0; }
+    nav.main-nav { margin-left: auto; display: flex; gap: 4px; align-items: center; }
+    nav.main-nav a {
+      color: #c8dcef; text-decoration: none; padding: 8px 14px;
+      border-radius: 6px; font-size: 0.88rem; transition: background 0.15s;
+    }
+    nav.main-nav a:hover, nav.main-nav a.active { background: rgba(255,255,255,0.12); color: #fff; }
+    .user-chip {
+      background: rgba(200,150,62,0.2); border: 1px solid var(--accent);
+      color: var(--accent-light); border-radius: 20px; padding: 5px 14px;
+      font-size: 0.82rem; margin-left: 10px;
+    }
+    .btn-logout {
+      background: transparent; border: 1px solid #c8dcef; color: #c8dcef;
+      border-radius: 6px; padding: 6px 14px; cursor: pointer; font-size: 0.82rem;
+      text-decoration: none; margin-left: 8px; transition: all 0.15s;
+    }
+    .btn-logout:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+    /* ── Layout ── */
+    .page-body { display: flex; flex: 1; }
+    .sidebar {
+      width: var(--sidebar-w); background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 20px 0; flex-shrink: 0;
+      min-height: calc(100vh - 108px);
+    }
+    .sidebar-section { padding: 8px 16px 4px; font-size: 0.7rem;
+                        text-transform: uppercase; letter-spacing: 1px;
+                        color: var(--text-muted); font-weight: 600; }
+    .sidebar a {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 20px; color: var(--text-muted);
+      text-decoration: none; font-size: 0.88rem; border-left: 3px solid transparent;
+      transition: all 0.15s;
+    }
+    .sidebar a:hover { background: var(--surface2); color: var(--primary);
+                        border-left-color: var(--accent); }
+    .sidebar a.active { background: #eef2f9; color: var(--primary);
+                         border-left-color: var(--primary); font-weight: 600; }
+    .sidebar .icon { font-size: 1rem; width: 20px; text-align: center; }
+
+    /* ── Main Content ── */
+    main { flex: 1; padding: 28px 32px; max-width: 100%; }
+    .page-title { font-size: 1.4rem; font-weight: 700; color: var(--primary);
+                   margin-bottom: 6px; }
+    .breadcrumb { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 20px; }
+    .breadcrumb a { color: var(--info); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+
+    /* ── Cards ── */
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 24px; margin-bottom: 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .card-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 16px; padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .card-title { font-size: 1rem; font-weight: 600; color: var(--primary); }
+
+    /* ── Stat Cards ── */
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 20px; }
+    .stat-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 18px 20px;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .stat-icon { width: 48px; height: 48px; border-radius: 12px;
+                  display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
+    .stat-icon.blue   { background: #e3ecf9; }
+    .stat-icon.green  { background: #e4f5ec; }
+    .stat-icon.amber  { background: #fef3e2; }
+    .stat-icon.purple { background: #f0eafd; }
+    .stat-num  { font-size: 1.6rem; font-weight: 700; color: var(--primary); }
+    .stat-label { font-size: 0.78rem; color: var(--text-muted); }
+
+    /* ── Tables ── */
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    th { background: var(--surface2); color: var(--text-muted);
+          text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.5px;
+          padding: 10px 14px; border-bottom: 2px solid var(--border); text-align: left; }
+    td { padding: 12px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    tr:hover td { background: var(--surface2); }
+
+    /* ── Forms ── */
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 0.85rem; font-weight: 600;
+                         color: var(--text); margin-bottom: 6px; }
+    .form-control {
+      width: 100%; padding: 10px 14px; border: 1px solid var(--border);
+      border-radius: 7px; font-size: 0.9rem; color: var(--text);
+      background: var(--surface); transition: border 0.15s;
+    }
+    .form-control:focus { outline: none; border-color: var(--primary);
+                           box-shadow: 0 0 0 3px rgba(26,58,92,0.1); }
+    textarea.form-control { resize: vertical; min-height: 90px; }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 9px 18px; border-radius: 7px; border: none;
+      font-size: 0.88rem; font-weight: 600; cursor: pointer; text-decoration: none;
+      transition: all 0.15s;
+    }
+    .btn-primary   { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-dark); }
+    .btn-accent    { background: var(--accent); color: #fff; }
+    .btn-accent:hover { background: #b5832e; }
+    .btn-outline   { background: transparent; border: 1px solid var(--border);
+                      color: var(--text-muted); }
+    .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+    .btn-sm { padding: 5px 12px; font-size: 0.8rem; }
+    .btn-danger { background: var(--danger); color: #fff; }
+
+    /* ── Badges ── */
+    .badge {
+      display: inline-block; padding: 3px 10px; border-radius: 20px;
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.3px;
+    }
+    .badge-primary  { background: #dce8f6; color: var(--primary); }
+    .badge-success  { background: #d5f0e3; color: var(--success); }
+    .badge-danger   { background: #fde8e6; color: var(--danger); }
+    .badge-warning  { background: #fef3e2; color: #8a5c00; }
+    .badge-info     { background: #e3ecf9; color: var(--info); }
+
+    /* ── Alerts ── */
+    .alert { padding: 12px 16px; border-radius: 8px; margin-bottom: 16px;
+              font-size: 0.88rem; display: flex; gap: 10px; align-items: flex-start; }
+    .alert-danger  { background: #fde8e6; border: 1px solid #f5c6c2; color: var(--danger); }
+    .alert-success { background: #d5f0e3; border: 1px solid #a3dbbf; color: var(--success); }
+    .alert-info    { background: #e3ecf9; border: 1px solid #b3cce8; color: var(--info); }
+    .alert-warning { background: #fef3e2; border: 1px solid #f5d999; color: #7a5000; }
+
+    /* ── Search Bar ── */
+    .search-wrap { position: relative; }
+    .search-wrap input { padding-left: 40px; }
+    .search-icon { position: absolute; left: 12px; top: 50%;
+                   transform: translateY(-50%); color: var(--text-muted); font-size: 0.9rem; }
+
+    /* ── Announcement Card ── */
+    .ann-card { border-left: 4px solid var(--accent); padding: 14px 18px;
+                 background: var(--surface2); border-radius: 0 8px 8px 0; margin-bottom: 12px; }
+    .ann-card.pinned { border-left-color: var(--primary); }
+    .ann-title { font-weight: 600; color: var(--primary); margin-bottom: 4px; }
+    .ann-meta  { font-size: 0.77rem; color: var(--text-muted); margin-bottom: 8px; }
+    .ann-body  { font-size: 0.88rem; line-height: 1.6; }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--primary-dark); color: #8aa4be;
+      text-align: center; padding: 14px; font-size: 0.78rem;
+      border-top: 2px solid var(--accent);
+    }
+    footer strong { color: var(--accent-light); }
+  </style>
+</head>
+<body>
+  <!-- Top Info Bar -->
+  <div class="topbar">
+    <span> Digital Egypt Pioneers Initiative — DEPI</span>
+    <div>
+      <a href="#">DEPI Calendar</a>
+      <a href="#">Training Support</a>
+      <a href="#">Help Center</a>
+    </div>
+  </div>
+
+  <!-- Main Header -->
+  <header>
+    <a href="/" class="logo-wrap">
+      <div class="logo-icon">B</div>
+      <div class="logo-text">
+        <strong>DEPI E-Learning Portal</strong>
+        <span>Digital Egypt Pioneers Initiative — LMS</span>
+      </div>
+    </a>
+    <nav class="main-nav">
+      <a href="/">Home</a>
+      <a href="/search/">Courses</a>
+      <a href="/directory/">Directory</a>
+      <a href="/announcements/">Announcements</a>
+      {% if request.session.username %}
+        <span class="user-chip"> {{ request.session.full_name|default:request.session.username }}</span>
+        <a href="/logout/" class="btn-logout">Sign Out</a>
+      {% else %}
+        <a href="/login/" class="btn btn-accent btn-sm" style="margin-left:10px;">DEPI Login</a>
+      {% endif %}
+    </nav>
+  </header>
+
+  <!-- Body -->
+  <div class="page-body">
+    {% if request.session.username %}
+    <aside class="sidebar">
+      <div class="sidebar-section">Main Menu</div>
+      <a href="/dashboard/"><span class="icon"></span> My Dashboard</a>
+      <a href="/grades/"><span class="icon"></span> My Grades</a>
+      <a href="/courses/"><span class="icon"></span> Course Catalog</a>
+      <a href="/announcements/"><span class="icon"></span> Announcements</a>
+      <a href="/tickets/"><span class="icon"></span> Support Tickets</a>
+
+      <div class="sidebar-section" style="margin-top:16px;">Account</div>
+      <a href="/profile/"><span class="icon"></span> My Profile</a>
+      <a href="/logout/"><span class="icon"></span> Sign Out</a>
+
+      {% if request.session.role == 'admin' %}
+      <div class="sidebar-section" style="margin-top:16px;">Administration</div>
+      <a href="/directory/"><span class="icon"></span> Learner Directory</a>
+      <a href="/api/debug/"><span class="icon"></span> System Info</a>
+      {% endif %}
+    </aside>
+    {% endif %}
+
+    <main>{% block content %}{% endblock %}</main>
+  </div>
+
+  <footer>
+    <strong>Digital Egypt Pioneers Initiative</strong> — E-Learning Management System v3.1 &nbsp;|&nbsp;
+    Academic Year 2024–2025 &nbsp;|&nbsp; IT Helpdesk: support@depi.gov.eg
+  </footer>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{% extends "vuln_app/base.html" %}
+{% block title %}Ticket Details{% endblock %}
+{% block content %}
+<h2 class="page-title">Ticket Details</h2>
+<div class="card">
+  {% if ticket %}
+  <div style="display:grid; gap:12px;">
+    <div><strong>Subject:</strong> {{ ticket.subject }}</div>
+    <div><strong>Status:</strong> {{ ticket.status|capfirst }}</div>
+    <div><strong>Student:</strong> {{ ticket.student.full_name }}</div>
+    <div><strong>Description:</strong> {{ ticket.description }}</div>
+  </div>
+  {% else %}
+  <p style="color: var(--text-muted);">No ticket found.</p>
+  {% endif %}
+</div>
+{% endblock %}

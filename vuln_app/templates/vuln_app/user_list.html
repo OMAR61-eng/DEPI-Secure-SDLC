@@ -1,0 +1,22 @@
+{% extends "vuln_app/base.html" %}
+{% block title %}User List - Access Control Lab{% endblock %}
+{% block content %}
+<div class="card">
+  <h2 style="color:#f0883e;"> User List — Broken Access Control (CWE-284)</h2>
+  <p>No authentication required to view this admin endpoint.</p>
+  <br>
+  <table>
+    <tr><th>ID</th><th>Username</th><th>Email</th><th>Role</th></tr>
+    {% for u in users %}
+    <tr>
+      <td>{{ u.id }}</td>
+      <td>{{ u.username }}</td>
+      <td>{{ u.email }}</td>
+      <td><span class="badge-{% if u.role == 'admin' %}danger{% else %}info{% endif %}">
+        {{ u.role }}
+      </span></td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

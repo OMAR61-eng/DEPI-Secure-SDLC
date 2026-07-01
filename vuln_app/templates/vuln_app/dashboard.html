@@ -1,0 +1,61 @@
+{% extends "vuln_app/base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h2 class="page-title">Dashboard</h2>
+<p class="breadcrumb">Welcome back, {{ student_name }}.</p>
+
+<div class="card">
+  <div class="card-header">
+    <span class="card-title">Student Overview</span>
+  </div>
+  <div style="display:grid; gap:12px;">
+    <div><strong>Student ID:</strong> {{ student.student_id|default:"-" }}</div>
+    <div><strong>Department:</strong> {{ student.department|default:"-" }}</div>
+    <div><strong>Email:</strong> {{ student.email|default:"-" }}</div>
+    <div><strong>GPA:</strong> {{ student.gpa|default:"-" }}</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <span class="card-title">My Enrollments</span>
+  </div>
+  {% if enrollments %}
+  <table>
+    <tr>
+      <th>Course</th>
+      <th>Grade</th>
+      <th>Score</th>
+      <th>Feedback</th>
+    </tr>
+    {% for enrollment in enrollments %}
+    <tr>
+      <td>{{ enrollment.course.code }} — {{ enrollment.course.title }}</td>
+      <td>{{ enrollment.grade|default:"Pending" }}</td>
+      <td>{{ enrollment.score|default:"0" }}</td>
+      <td>{{ enrollment.feedback|default:"No feedback yet." }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <p style="color: var(--text-muted);">No enrollments found.</p>
+  {% endif %}
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <span class="card-title">Recent Announcements</span>
+  </div>
+  {% if announcements %}
+  {% for ann in announcements %}
+  <div class="ann-card {% if ann.is_pinned %}pinned{% endif %}">
+    <div class="ann-title">{{ ann.title }}</div>
+    <div class="ann-meta">By {{ ann.author.full_name }} · {{ ann.posted_at|date:"M d, Y" }}</div>
+    <div class="ann-body">{{ ann.body|safe }}</div>
+  </div>
+  {% endfor %}
+  {% else %}
+  <p style="color: var(--text-muted);">No announcements available.</p>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "vuln_app/base.html" %}
+{% block title %}Registered Learners{% endblock %}
+{% block content %}
+<h2 class="page-title">Registered Learners</h2>
+<p class="breadcrumb">View the learners currently enrolled in DEPI programs.</p>
+<div class="card">
+  <table>
+    <tr>
+      <th>Full Name</th>
+      <th>Student ID</th>
+      <th>Email</th>
+      <th>Department</th>
+    </tr>
+    {% for learner in learners %}
+    <tr>
+      <td>{{ learner.full_name }}</td>
+      <td>{{ learner.student_id }}</td>
+      <td>{{ learner.email }}</td>
+      <td>{{ learner.department }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="4">No learners found.</td></tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

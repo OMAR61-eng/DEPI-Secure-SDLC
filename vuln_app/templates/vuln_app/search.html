@@ -1,0 +1,42 @@
+{% extends "vuln_app/base.html" %}
+{% block title %}Course Search{% endblock %}
+{% block content %}
+<h2 class="page-title">Course Catalog Search</h2>
+<div class="card">
+    <form method="GET" action="/search/" style="display: flex; gap: 10px;">
+        <input type="text" name="q" class="form-control" placeholder="Search by course title or code..." value="{{ q|default:'' }}">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+</div>
+
+{% if db_error %}
+<div class="alert alert-danger" style="font-family: monospace;">
+    <strong>Database Error (Verbose):</strong> <br> {{ db_error }}
+</div>
+{% endif %}
+
+{% if q %}
+<div style="margin-bottom: 20px;">
+    Showing results for: <strong style="color: var(--danger);">{{ q }}</strong>
+</div>
+{% endif %}
+
+{% if results %}
+<div class="card">
+    <table>
+        <tr>
+            <th>Code</th>
+            <th>Course Title</th>
+            <th>Description</th>
+        </tr>
+        {% for course in results %}
+        <tr>
+            <td><strong>{{ course.code }}</strong></td>
+            <td>{{ course.title }}</td>
+            <td>{{ course.desc|truncatewords:15 }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endif %}
+{% endblock %}

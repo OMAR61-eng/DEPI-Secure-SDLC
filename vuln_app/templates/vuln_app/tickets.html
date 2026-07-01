@@ -1,0 +1,22 @@
+{% extends "vuln_app/base.html" %}
+{% block title %}Support Tickets{% endblock %}
+{% block content %}
+<h2 class="page-title">Support Tickets</h2>
+<div class="card">
+  <div class="card-header"><span class="card-title">Your Requests</span></div>
+  {% if tickets %}
+  <table>
+    <tr><th>Subject</th><th>Status</th><th>Created</th></tr>
+    {% for ticket in tickets %}
+    <tr>
+      <td><a href="/tickets/{{ ticket.id }}/">{{ ticket.subject }}</a></td>
+      <td>{{ ticket.status|capfirst }}</td>
+      <td>{{ ticket.created_at|date:"M d, Y" }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <p style="color: var(--text-muted);">No tickets found.</p>
+  {% endif %}
+</div>
+{% endblock %}

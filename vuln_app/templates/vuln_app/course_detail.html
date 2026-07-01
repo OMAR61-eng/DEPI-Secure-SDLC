@@ -1,0 +1,54 @@
+{% extends "vuln_app/base.html" %}
+{% block title %}Course Details{% endblock %}
+{% block content %}
+<h2 class="page-title">Course Details</h2>
+<div class="card" style="margin-bottom: 20px;">
+  {% if result %}
+  <div style="display:grid; gap:12px;">
+    <div><strong>Code:</strong> {{ result.code }}</div>
+    <div><strong>Title:</strong> {{ result.title }}</div>
+    <div><strong>Description:</strong> {{ result.description }}</div>
+    <div><strong>Credits:</strong> {{ result.credits }}</div>
+    <div><strong>Semester:</strong> {{ result.semester }}</div>
+  </div>
+  {% else %}
+  <p style="color: var(--text-muted);">No course information available.</p>
+  {% endif %}
+  {% if db_error %}
+  <div class="alert alert-danger" style="margin-top:16px;">{{ db_error }}</div>
+  {% endif %}
+</div>
+
+{% if course %}
+<div class="card" style="margin-bottom: 20px;">
+  <h3 style="margin-top: 0;">Course Instructors</h3>
+  <ul>
+    {% for instructor in instructors %}
+    <li>{{ instructor.full_name }} ({{ instructor.department }})</li>
+    {% empty %}
+    <li>No instructors assigned.</li>
+    {% endfor %}
+  </ul>
+</div>
+
+<div class="card">
+  <h3 style="margin-top: 0;">Enrolled Students</h3>
+  <table>
+    <tr>
+      <th>Student Name</th>
+      <th>Grade</th>
+      <th>Score</th>
+    </tr>
+    {% for enrollment in enrolled_students %}
+    <tr>
+      <td>{{ enrollment.student.full_name }}</td>
+      <td>{{ enrollment.grade|default:"Pending" }}</td>
+      <td>{{ enrollment.score }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="3">No students enrolled yet.</td></tr>
+    {% endfor %}
+  </table>
+</div>
+{% endif %}
+{% endblock %}

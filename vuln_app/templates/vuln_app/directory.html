@@ -1,0 +1,72 @@
+{% extends "vuln_app/base.html" %}
+{% block title %}Student Directory{% endblock %}
+{% block content %}
+<h2 class="page-title">Student Directory</h2>
+<p class="breadcrumb">List of all active students and instructors</p>
+<div class="card" style="margin-bottom: 20px;">
+    <h3 style="margin-top: 0;">Students</h3>
+    <table>
+        <tr>
+            <th>Student ID</th>
+            <th>Full Name</th>
+            <th>Department</th>
+            <th>Username</th>
+        </tr>
+        {% for row in students %}
+        <tr>
+            <td>{{ row.student.student_id }}</td>
+            <td>{{ row.student.full_name }}</td>
+            <td>{{ row.student.department }}</td>
+            <td><span class="badge badge-info">{{ row.student.username }}</span></td>
+        </tr>
+        <tr>
+            <td colspan="4" style="background: var(--surface2);">
+                <strong>Courses:</strong>
+                {% if row.courses %}
+                    {% for course in row.courses %}
+                        <a href="/courses/?id={{ course.id }}" style="margin-right: 8px; color: var(--primary);">{{ course.code }} - {{ course.title }}</a>
+                    {% endfor %}
+                {% else %}
+                    <span style="color: var(--text-muted);">No enrolled courses</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4">No students found in directory.</td></tr>
+        {% endfor %}
+    </table>
+</div>
+<div class="card">
+    <h3 style="margin-top: 0;">Instructors</h3>
+    <table>
+        <tr>
+            <th>Instructor ID</th>
+            <th>Full Name</th>
+            <th>Department</th>
+            <th>Username</th>
+        </tr>
+        {% for row in instructors %}
+        <tr>
+            <td>{{ row.instructor.student_id }}</td>
+            <td>{{ row.instructor.full_name }}</td>
+            <td>{{ row.instructor.department }}</td>
+            <td><span class="badge badge-primary">{{ row.instructor.username }}</span></td>
+        </tr>
+        <tr>
+            <td colspan="4" style="background: var(--surface2);">
+                <strong>Courses:</strong>
+                {% if row.courses %}
+                    {% for course in row.courses %}
+                        <a href="/courses/?id={{ course.id }}" style="margin-right: 8px; color: var(--primary);">{{ course.code }} - {{ course.title }}</a>
+                    {% endfor %}
+                {% else %}
+                    <span style="color: var(--text-muted);">No assigned courses</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4">No instructors found in directory.</td></tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

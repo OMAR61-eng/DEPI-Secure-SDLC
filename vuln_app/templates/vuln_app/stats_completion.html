@@ -1,0 +1,29 @@
+{% extends "vuln_app/base.html" %}
+{% block title %}Completion Rate{% endblock %}
+{% block content %}
+<h2 class="page-title">Completion Rate</h2>
+<p class="breadcrumb">View learner completion across graded enrollments.</p>
+<div class="card">
+  <div style="margin-bottom: 16px; font-size: 1.05rem; font-weight: 600; color: var(--primary);">
+    Overall rate: <strong>{{ rate }}%</strong> ({{ completed }}/{{ total }} graded enrollments)
+  </div>
+  <table>
+    <tr>
+      <th>Learner</th>
+      <th>Course</th>
+      <th>Grade</th>
+      <th>Score</th>
+    </tr>
+    {% for enrollment in enrollments %}
+    <tr>
+      <td>{{ enrollment.student.full_name }}</td>
+      <td>{{ enrollment.course.title }}</td>
+      <td>{{ enrollment.grade }}</td>
+      <td>{{ enrollment.score }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="4">No completion data yet.</td></tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

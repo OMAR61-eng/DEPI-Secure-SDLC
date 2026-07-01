@@ -1,0 +1,10 @@
+"""
+Main URL Configuration - Django App
+"""
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('vuln_app.urls')),
+]

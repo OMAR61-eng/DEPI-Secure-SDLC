@@ -1,0 +1,18 @@
+{% extends "vuln_app/base.html" %}
+{% block title %}Grade Details{% endblock %}
+{% block content %}
+<h2 class="page-title">Grade Details</h2>
+<div class="card">
+  <div class="card-header"><span class="card-title">Enrollment Information</span></div>
+  {% if enrollment %}
+  <div style="display:grid; gap:12px;">
+    <div><strong>Course:</strong> {{ enrollment.course.code }} — {{ enrollment.course.title }}</div>
+    <div><strong>Grade:</strong> {{ enrollment.grade|default:"Pending" }}</div>
+    <div><strong>Score:</strong> {{ enrollment.score|default:"0" }}</div>
+    <div><strong>Feedback:</strong> {{ enrollment.feedback|default:"No feedback yet." }}</div>
+  </div>
+  {% else %}
+  <p style="color: var(--text-muted);">No grade record found.</p>
+  {% endif %}
+</div>
+{% endblock %}

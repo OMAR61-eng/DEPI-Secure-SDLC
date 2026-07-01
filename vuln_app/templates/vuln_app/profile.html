@@ -1,0 +1,25 @@
+{% extends "vuln_app/base.html" %}
+{% block title %}My Profile{% endblock %}
+{% block content %}
+<h2 class="page-title">My Profile</h2>
+<p class="breadcrumb">Your account information and academic details.</p>
+
+<div class="card">
+  <div class="card-header"><span class="card-title">Account Details</span></div>
+  {% if student %}
+  <div style="display:grid; gap:12px;">
+    <div><strong>Full Name:</strong> {{ student.full_name }}</div>
+    <div><strong>Username:</strong> {{ student.username }}</div>
+    <div><strong>Student ID:</strong> {{ student.student_id }}</div>
+    <div><strong>Email:</strong> {{ student.email }}</div>
+    <div><strong>Department:</strong> {{ student.department }}</div>
+    <div><strong>Role:</strong> {{ student.role|capfirst }}</div>
+    <div><strong>GPA:</strong> {{ student.gpa }}</div>
+    <div><strong>Phone:</strong> {{ student.phone|default:"-" }}</div>
+    <div><strong>National ID:</strong> {{ student.national_id|default:"-" }}</div>
+  </div>
+  {% else %}
+  <p style="color: var(--text-muted);">No profile information found.</p>
+  {% endif %}
+</div>
+{% endblock %}

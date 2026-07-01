@@ -1,0 +1,43 @@
+{% extends "vuln_app/base.html" %}
+{% block title %}Student Registration{% endblock %}
+{% block content %}
+<div style="max-width: 500px; margin: 40px auto; background: #fff; padding: 30px; border-radius: 10px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+    <div style="text-align: center; margin-bottom: 20px;">
+        <div style="font-size: 3rem; margin-bottom: 10px;"></div>
+        <h2 style="color: var(--primary);">DEPI Registration</h2>
+        <p style="color: var(--text-muted); font-size: 0.85rem;">Create your DEPI learning portal account</p>
+    </div>
+    
+    {% if error %}
+    <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST" action="/register/">
+        <div class="form-group">
+            <label>DEPI ID</label>
+            <input type="text" name="student_id" class="form-control" placeholder="e.g. DEPI-2024-001" required>
+        </div>
+        <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" name="full_name" class="form-control" placeholder="e.g. Omar Ragab" required>
+        </div>
+        <div class="form-group">
+            <label>DEPI Email</label>
+            <input type="email" name="email" class="form-control" placeholder="student@depi.gov.eg" required>
+        </div>
+        <div class="form-group">
+            <label>Choose Username</label>
+            <input type="text" name="username" class="form-control" placeholder="Unique username" required>
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" name="password" class="form-control" placeholder="Create a password" required>
+        </div>
+        <button type="submit" class="btn btn-accent" style="width: 100%; justify-content: center; margin-top: 10px;">Create DEPI Account</button>
+    </form>
+    
+    <div style="text-align: center; margin-top: 15px; font-size: 0.85rem;">
+        Already have an account? <a href="/login/" style="color: var(--info); text-decoration: none; font-weight: bold;">Login here</a>
+    </div>
+</div>
+{% endblock %}

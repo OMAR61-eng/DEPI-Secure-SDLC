@@ -1,0 +1,26 @@
+{% extends "vuln_app/base.html" %}
+{% block title %}DEPI Mentors{% endblock %}
+{% block content %}
+<h2 class="page-title">DEPI Mentors</h2>
+<p class="breadcrumb">See the instructors and mentors supporting the DEPI learning experience.</p>
+<div class="card">
+  <table>
+    <tr>
+      <th>Full Name</th>
+      <th>Role</th>
+      <th>Email</th>
+      <th>Department</th>
+    </tr>
+    {% for mentor in mentors %}
+    <tr>
+      <td>{{ mentor.full_name }}</td>
+      <td>{{ mentor.role|title }}</td>
+      <td>{{ mentor.email }}</td>
+      <td>{{ mentor.department }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="4">No mentors found.</td></tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}
